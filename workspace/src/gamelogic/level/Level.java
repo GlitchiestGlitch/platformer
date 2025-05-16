@@ -117,7 +117,7 @@ public class Level {
 				else if (values[x][y] == 20)
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Half_water"), this, 2);
 				else if (values[x][y] == 21)
-					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
+									tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
 			}
 
 		}
@@ -196,8 +196,54 @@ public class Level {
 	//#############################################################################################################
 	//Your code goes here! 
 	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
+	//Pre-condition: Takes in a valid col and row, where we want to add a water block based on the fullness
+	//Post-condition: Draws a water block, with varying fillness based on that variable
 	private void water(int col, int row, Map map, int fullness) {
-		
+		//base case
+		if(row > map.getTiles()[0].length || row < 0 || col<0 || col>map.getTiles().length){
+			return;
+		}
+		if(fullness == 0){
+			Water w = new Water (col, row, tileSize, tileset.getImage("Falling_water"), this, fullness);
+			map.addTile(col, row, w);
+		}
+		if (fullness == 1){
+		Water w = new Water (col, row, tileSize, tileset.getImage("Quarter_water"), this, 2);
+		map.addTile(col, row, w);
+
+		}
+		if (fullness == 2){
+		Water w = new Water (col, row, tileSize, tileset.getImage("Half_water"), this, 2);
+		map.addTile(col, row, w);
+
+		}
+		if (fullness == 3){
+		Water w = new Water (col, row, tileSize, tileset.getImage("Full_water"), this, 3);
+		map.addTile(col, row, w);
+		}	
+		 if (row+2 < map.getTiles()[0].length && !(map.getTiles()[col][row+1] instanceof Water) && map.getTiles()[col][row+2].isSolid() ==true && map.getTiles()[col][row+1].isSolid() ==false ){
+			water(col, row + 1, map, 3);
+		}
+		 else if(row+1 < map.getTiles()[0].length && !(map.getTiles()[col][row+1] instanceof Water) && map.getTiles()[col][row+1].isSolid() ==false ) {
+				water(col, row + 1, map, 0);
+		}
+		else {
+		if(col+1 < map.getTiles().length && !(map.getTiles()[col+1][row] instanceof Water) && map.getTiles()[col+1][row].isSolid() ==false ) 
+			if(fullness == 1){
+				water(col+1, row, map, fullness);
+			}
+			else if(fullness >1){
+			water(col+1, row, map, fullness-1);
+			}
+		if(col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water) && map.getTiles()[col-1][row].isSolid() ==false) {
+			if(fullness == 1){
+				water(col-1, row, map, fullness);
+			}
+			else if (fullness>1){
+			water(col-1, row, map, fullness-1);
+			}
+		}
+		}
 	}
 
 

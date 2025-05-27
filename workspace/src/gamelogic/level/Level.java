@@ -165,6 +165,11 @@ public class Level {
 				onPlayerDeath();
 			if (player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes)
 				onPlayerDeath();
+			for (int i = 0; i < flowers.size(); i++) {
+				if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
+					player.walkSpeed = player.walkSpeed*2;
+				}
+			}
 
 			for (int i = 0; i < flowers.size(); i++) {
 				if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
@@ -196,7 +201,7 @@ public class Level {
 	// Adds gas tiles until the requisite number of squares are filled or there is
 	// no more room
 	//Pre-condition: Takes in a column and row, will recieve 20 numSquaresToFill and an array placedThisRound.
-	//Post-condition: Will draw 20 gasses, that will go in any direction, as long as it's not already a gas or solid and it is inbounds.
+	//Post-condition: Will draw gasses going up to numSquaresToFill, that will go in any direction, as long as it's not already a gas or solid and it is inbounds.
 	private void addGas(int col, int row, Map map, int numSquaresToFill, ArrayList<Gas> placedThisRound) {
 		Gas g = new Gas(col, row, tileSize, tileset.getImage("GasOne"), this, 0);
 		map.addTile(col, row, g);
@@ -213,7 +218,7 @@ public class Level {
 						Gas t = new Gas(j, i, tileSize, tileset.getImage("GasOne"), this, 0);
 						map.addTile(j, i, t);
 						placedThisRound.add(t);
-						numSquaresToFill--;
+						numSquaresToFill--; 
 					}
 					if (j == c) {
 						j += 3;

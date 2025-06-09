@@ -9,7 +9,7 @@ import gamelogic.GameResources;
 import gamelogic.level.Level;
  
 public class Dropper extends Enemy{
-    private float jumpPower = 1000;
+    private float jumpPower = 2000;
     //precondition - takes in an x, y and level where we want to draw the dropper. must be findable on a map
     //postcondition - draws the actual dropper on that spot.
     public Dropper(float x, float y, Level level) {
